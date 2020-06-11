@@ -23,9 +23,13 @@
 @property (nonatomic, weak)   UIScrollView *helpView;
 @property (nonatomic, assign) NSTimeInterval tsHelpViewWasScrolled;
 @property (weak, nonatomic)   IBOutlet UILabel *recInfoLabel;
-@property (nonatomic, strong) IBOutlet NSTimer *recInfoLabelTimer;
+@property (nonatomic, strong)          NSTimer *recInfoLabelTimer;
 @property (nonatomic, assign) NSTimeInterval recInfoStartTime;
 @property (weak, nonatomic) IBOutlet UILabel *filterInfoLabel;
+@property (weak, nonatomic) IBOutlet UIButton *dotsCrushBtn;
+@property (weak, nonatomic) IBOutlet UIButton *ftbCrushBtn;
+@property (weak, nonatomic) IBOutlet UIButton *pxCrushBtn;
+@property (weak, nonatomic) IBOutlet UIButton *blurCrushBtn;
 @end
 
 @implementation SimpleVideoFilterViewController
@@ -62,6 +66,10 @@
             [self setBGToView:self.recButton color:[UIColor colorWithWhite:0.0 alpha:0.15] cornerRadius:8.0];
             [self setBGToView:self.flashButton color:[UIColor colorWithWhite:0.0 alpha:0.15] cornerRadius:8.0];
             [self setBGToView:self.helpButton color:[UIColor colorWithWhite:0.0 alpha:0.15] cornerRadius:8.0];
+            [self setBGToView:self.ftbCrushBtn color:[UIColor colorWithWhite:0.0 alpha:0.15] cornerRadius:8.0];
+            [self setBGToView:self.blurCrushBtn color:[UIColor colorWithWhite:0.0 alpha:0.15] cornerRadius:8.0];
+            [self setBGToView:self.pxCrushBtn color:[UIColor colorWithWhite:0.0 alpha:0.15] cornerRadius:8.0];
+            [self setBGToView:self.dotsCrushBtn color:[UIColor colorWithWhite:0.0 alpha:0.15] cornerRadius:8.0];
             [self setBGToView:self.filterInfoLabel color:[UIColor colorWithWhite:0.0 alpha:0.15] cornerRadius:8.0];
             [self setupPaths];
             [self setupCircuit];
@@ -95,6 +103,10 @@
     self.recButton.hidden = YES;
     self.flashButton.hidden = YES;
     self.helpButton.hidden = YES;
+    self.ftbCrushBtn.hidden = YES;
+    self.blurCrushBtn.hidden = YES;
+    self.pxCrushBtn.hidden = YES;
+    self.dotsCrushBtn.hidden = YES;
     self.recInfoLabel.hidden = YES;
 }
 
@@ -102,6 +114,10 @@
     self.recButton.hidden = NO;
     self.flashButton.hidden = NO;
     self.helpButton.hidden = NO;
+    self.ftbCrushBtn.hidden = NO;
+    self.blurCrushBtn.hidden = NO;
+    self.pxCrushBtn.hidden = NO;
+    self.dotsCrushBtn.hidden = NO;
 }
 
 - (void)requestPermissionsWithCallback:(dispatch_block_t)cb {
@@ -246,7 +262,7 @@
         {
             GPUImageSaturationFilter *satF = [[GPUImageSaturationFilter alloc] init];
             satF.saturation = 0.0;
-            satF.qevName = @"Retro TV";
+            satF.qevName = @"Valve TV";
             [self.retroFilters addObject:satF];
         }
         
@@ -490,10 +506,10 @@
 
 - (void)onFlashStateUpdated {
     if (self.isFlashOn) {
-        [self.flashButton setImage:[UIImage imageNamed:@"torch_icon_w"] forState:UIControlStateNormal];
+        [self.flashButton setImage:[UIImage imageNamed:@"torch_icon"] forState:UIControlStateNormal];
     }
     else {
-        [self.flashButton setImage:[UIImage imageNamed:@"torch_icon"] forState:UIControlStateNormal];
+        [self.flashButton setImage:[UIImage imageNamed:@"torch_icon_w"] forState:UIControlStateNormal];
     }
 }
 
@@ -520,6 +536,10 @@
 }
 
 - (IBAction)onHelpButton:(id)sender {
+    if (self.isRecording) {
+        return;
+    }
+    
     if (self.helpView) {
         [self hideHelp];
         return;
@@ -557,15 +577,29 @@
     
     self.helpView = tv;
     
+    CGFloat bsw = [[UIScreen mainScreen] bounds].size.width;
+    BOOL hideCrushAndTopLabel = bsw < 668;
+    
     [UIView animateWithDuration:0.25 animations:^{
         tv.alpha = 1.0;
+        if (hideCrushAndTopLabel) {
+            self.blurCrushBtn.alpha = 0.0;
+            self.filterInfoLabel.alpha = 0.0;
+        }
     }];
 }
 
 - (void)hideHelp {
+    CGFloat bsw = [[UIScreen mainScreen] bounds].size.width;
+    BOOL revealCrushAndTopLabel = bsw < 668;
+    
     [UIView animateWithDuration:0.25 animations:^
     {
         self.helpView.alpha = 0.0;
+        if (revealCrushAndTopLabel) {
+            self.blurCrushBtn.alpha = 1.0;
+            self.filterInfoLabel.alpha = 1.0;
+        }
     }
                      completion:^(BOOL finished)
     {
@@ -646,6 +680,38 @@
         NSString *formattedTime = [NSString stringWithFormat:@"● %02u:%02u:%02u", h, m, s];
         self.recInfoLabel.text = formattedTime;
     }
+}
+
+- (IBAction)onDotsCrushBtnDown:(id)sender {
+    NSLog(@"1");
+}
+
+- (IBAction)onDotsCrushBtnUp:(id)sender {
+    NSLog(@"1.1");
+}
+
+- (IBAction)onFtbCrushBtnDown:(id)sender {
+    NSLog(@"2");
+}
+
+- (IBAction)onFtbCrushBtnUp:(id)sender {
+    NSLog(@"2.2");
+}
+
+- (IBAction)onPxCrushBtnDown:(id)sender {
+    NSLog(@"3");
+}
+
+- (IBAction)onPxCrushBtnUp:(id)sender {
+    NSLog(@"3.3");
+}
+
+- (IBAction)onBlurCrushBtnDown:(id)sender {
+    NSLog(@"4");
+}
+
+- (IBAction)onBlurCrushBtnUp:(id)sender {
+    NSLog(@"4.4");
 }
 
 @end

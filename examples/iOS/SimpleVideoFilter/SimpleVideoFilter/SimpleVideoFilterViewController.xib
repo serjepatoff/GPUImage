@@ -10,9 +10,13 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="SimpleVideoFilterViewController">
             <connections>
+                <outlet property="blurCrushBtn" destination="TkK-as-TKb" id="Tg7-l6-Bep"/>
+                <outlet property="dotsCrushBtn" destination="fPv-tI-Kf5" id="GbV-jP-dZB"/>
                 <outlet property="filterInfoLabel" destination="roZ-WT-1mc" id="PmG-jc-ryY"/>
                 <outlet property="flashButton" destination="jBb-M5-ZhT" id="w42-FD-5Cq"/>
+                <outlet property="ftbCrushBtn" destination="Y2X-W9-EGc" id="Gtz-cK-SSe"/>
                 <outlet property="helpButton" destination="t7F-NC-APN" id="N6Q-zg-pvE"/>
+                <outlet property="pxCrushBtn" destination="xXv-yH-ac2" id="QKi-Pu-Vrf"/>
                 <outlet property="recButton" destination="XTE-HU-4XV" id="aev-2Q-2KJ"/>
                 <outlet property="recInfoLabel" destination="fXd-yu-1Sg" id="DVM-Ur-b0I"/>
                 <outlet property="view" destination="1" id="3"/>
@@ -41,13 +45,11 @@
                     <rect key="frame" x="844" y="394" width="50" height="50"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="50" id="PjR-8x-nPS"/>
-                        <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="50" id="kUT-W4-CVy"/>
                         <constraint firstAttribute="height" constant="50" id="mL8-xA-RYo"/>
-                        <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="50" id="sHO-Sw-Yw8"/>
                     </constraints>
                     <fontDescription key="fontDescription" type="boldSystem" pointSize="34"/>
                     <state key="normal" title="?">
-                        <color key="titleColor" cocoaTouchSystemColor="lightTextColor"/>
+                        <color key="titleColor" cocoaTouchSystemColor="tableCellGroupedBackgroundColor"/>
                     </state>
                     <connections>
                         <action selector="onHelpButton:" destination="-1" eventType="touchUpInside" id="1Kh-E0-tmh"/>
@@ -56,14 +58,12 @@
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jBb-M5-ZhT">
                     <rect key="frame" x="844" y="16" width="50" height="50"/>
                     <constraints>
-                        <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="50" id="JD3-kM-UBq"/>
-                        <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="50" id="egQ-HD-fNO"/>
                         <constraint firstAttribute="width" constant="50" id="gMj-Z5-0Q7"/>
                         <constraint firstAttribute="height" constant="50" id="z5H-zO-q3Q"/>
                     </constraints>
                     <color key="tintColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <inset key="contentEdgeInsets" minX="8" minY="5" maxX="8" maxY="10"/>
-                    <state key="normal" image="torch_icon.png">
+                    <state key="normal" image="torch_icon_w.png">
                         <color key="titleColor" red="1" green="0.23137254900000001" blue="0.18823529410000001" alpha="0.59999999999999998" colorSpace="custom" customColorSpace="sRGB"/>
                     </state>
                     <connections>
@@ -87,21 +87,97 @@
                         <constraint firstAttribute="width" constant="217" id="pGZ-2o-4MX"/>
                     </constraints>
                     <fontDescription key="fontDescription" type="system" pointSize="16"/>
-                    <color key="textColor" cocoaTouchSystemColor="lightTextColor"/>
+                    <color key="textColor" cocoaTouchSystemColor="tableCellGroupedBackgroundColor"/>
                     <nil key="highlightedColor"/>
                 </label>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Y2X-W9-EGc">
+                    <rect key="frame" x="16" y="205" width="50" height="50"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="50" id="E5D-cK-Wb0"/>
+                        <constraint firstAttribute="height" constant="50" id="wKN-Qd-bbn"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <state key="normal" title="FTB">
+                        <color key="titleColor" cocoaTouchSystemColor="tableCellGroupedBackgroundColor"/>
+                    </state>
+                    <connections>
+                        <action selector="onFtbCrushBtnDown:" destination="-1" eventType="touchDown" id="Dv2-lH-smv"/>
+                        <action selector="onFtbCrushBtnUp:" destination="-1" eventType="touchUpOutside" id="PQj-tf-VHA"/>
+                        <action selector="onFtbCrushBtnUp:" destination="-1" eventType="touchCancel" id="Rjf-TU-o31"/>
+                        <action selector="onFtbCrushBtnUp:" destination="-1" eventType="touchUpInside" id="s33-Wq-mTA"/>
+                    </connections>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xXv-yH-ac2">
+                    <rect key="frame" x="16" y="394" width="50" height="50"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="50" id="0en-Zy-zV5"/>
+                        <constraint firstAttribute="height" constant="50" id="itL-Dk-UXz"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <state key="normal" title="PX">
+                        <color key="titleColor" cocoaTouchSystemColor="tableCellGroupedBackgroundColor"/>
+                    </state>
+                    <connections>
+                        <action selector="onPxCrushBtnDown:" destination="-1" eventType="touchDown" id="tMX-IW-keJ"/>
+                        <action selector="onPxCrushBtnUp:" destination="-1" eventType="touchUpInside" id="gYY-08-0z2"/>
+                        <action selector="onPxCrushBtnUp:" destination="-1" eventType="touchCancel" id="hvO-yl-39s"/>
+                        <action selector="onPxCrushBtnUp:" destination="-1" eventType="touchUpOutside" id="ziJ-RS-yw4"/>
+                    </connections>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fPv-tI-Kf5">
+                    <rect key="frame" x="16" y="16" width="50" height="50"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="50" id="3s7-DG-Pbb"/>
+                        <constraint firstAttribute="width" constant="50" id="dkV-6p-CS1"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <state key="normal" title="Dots">
+                        <color key="titleColor" cocoaTouchSystemColor="tableCellGroupedBackgroundColor"/>
+                    </state>
+                    <connections>
+                        <action selector="onDotsCrushBtnDown:" destination="-1" eventType="touchDown" id="wJw-Nq-aIh"/>
+                        <action selector="onDotsCrushBtnUp:" destination="-1" eventType="touchCancel" id="0Yc-uD-U3X"/>
+                        <action selector="onDotsCrushBtnUp:" destination="-1" eventType="touchUpInside" id="Mgu-we-hz8"/>
+                        <action selector="onDotsCrushBtnUp:" destination="-1" eventType="touchUpOutside" id="UNW-Ad-DwT"/>
+                    </connections>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="TkK-as-TKb">
+                    <rect key="frame" x="82" y="205" width="50" height="50"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="50" id="2rS-zj-nS5"/>
+                        <constraint firstAttribute="width" constant="50" id="XBa-AE-70V"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <state key="normal" title="Blur">
+                        <color key="titleColor" cocoaTouchSystemColor="tableCellGroupedBackgroundColor"/>
+                    </state>
+                    <connections>
+                        <action selector="onBlurCrushBtnDown:" destination="-1" eventType="touchDown" id="49f-dd-wtQ"/>
+                        <action selector="onBlurCrushBtnUp:" destination="-1" eventType="touchUpOutside" id="QX7-MZ-CXd"/>
+                        <action selector="onBlurCrushBtnUp:" destination="-1" eventType="touchCancel" id="gw9-Eg-0zZ"/>
+                        <action selector="onBlurCrushBtnUp:" destination="-1" eventType="touchUpInside" id="yyO-Kp-PpQ"/>
+                    </connections>
+                </button>
             </subviews>
             <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
             <constraints>
                 <constraint firstItem="Ae2-xZ-O7E" firstAttribute="trailing" secondItem="XTE-HU-4XV" secondAttribute="trailing" constant="16" id="1aU-M9-Ibx"/>
                 <constraint firstAttribute="bottom" secondItem="fXd-yu-1Sg" secondAttribute="bottom" constant="16" id="5Y2-M1-ocZ"/>
+                <constraint firstItem="Y2X-W9-EGc" firstAttribute="leading" secondItem="Ae2-xZ-O7E" secondAttribute="leading" constant="16" id="677-fb-iyN"/>
                 <constraint firstItem="XTE-HU-4XV" firstAttribute="centerY" secondItem="1" secondAttribute="centerY" id="HAu-rd-7gk"/>
+                <constraint firstItem="xXv-yH-ac2" firstAttribute="leading" secondItem="Ae2-xZ-O7E" secondAttribute="leading" constant="16" id="ItN-en-aD4"/>
+                <constraint firstItem="TkK-as-TKb" firstAttribute="leading" secondItem="Y2X-W9-EGc" secondAttribute="trailing" constant="16" id="QUS-go-3yL"/>
+                <constraint firstAttribute="bottom" secondItem="xXv-yH-ac2" secondAttribute="bottom" constant="16" id="YyD-kj-sti"/>
                 <constraint firstItem="roZ-WT-1mc" firstAttribute="centerX" secondItem="1" secondAttribute="centerX" id="dWZ-qy-HNW"/>
+                <constraint firstItem="Y2X-W9-EGc" firstAttribute="centerY" secondItem="1" secondAttribute="centerY" id="flD-eu-Acx"/>
+                <constraint firstItem="TkK-as-TKb" firstAttribute="centerY" secondItem="1" secondAttribute="centerY" id="gn5-Jz-7d9"/>
                 <constraint firstAttribute="bottom" secondItem="t7F-NC-APN" secondAttribute="bottom" constant="16" id="gwt-Fx-9wE"/>
+                <constraint firstItem="fPv-tI-Kf5" firstAttribute="leading" secondItem="Ae2-xZ-O7E" secondAttribute="leading" constant="16" id="m0p-yU-13z"/>
                 <constraint firstItem="roZ-WT-1mc" firstAttribute="top" secondItem="1" secondAttribute="top" constant="16" id="qvn-48-lZU"/>
                 <constraint firstItem="Ae2-xZ-O7E" firstAttribute="trailing" secondItem="t7F-NC-APN" secondAttribute="trailing" constant="16" id="skR-DA-i2K"/>
                 <constraint firstItem="Ae2-xZ-O7E" firstAttribute="trailing" secondItem="jBb-M5-ZhT" secondAttribute="trailing" constant="16" id="sww-yo-npM"/>
                 <constraint firstItem="jBb-M5-ZhT" firstAttribute="top" secondItem="1" secondAttribute="top" constant="16" id="uou-Dp-DiT"/>
+                <constraint firstItem="fPv-tI-Kf5" firstAttribute="top" secondItem="1" secondAttribute="top" constant="16" id="wgZ-QU-Njn"/>
                 <constraint firstItem="t7F-NC-APN" firstAttribute="leading" secondItem="fXd-yu-1Sg" secondAttribute="trailing" constant="40" id="zev-g8-fy3"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
@@ -110,6 +186,6 @@
         </view>
     </objects>
     <resources>
-        <image name="torch_icon.png" width="200" height="200"/>
+        <image name="torch_icon_w.png" width="200" height="200"/>
     </resources>
 </document>
