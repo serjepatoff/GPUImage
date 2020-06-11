@@ -2,19 +2,30 @@
 #import <AssetsLibrary/ALAssetsLibrary.h>
 #import <Photos/Photos.h>
 
-@interface SimpleVideoFilterViewController ()
+@interface SimpleVideoFilterViewController () <UITextViewDelegate>
 @property (nonatomic, strong) NSURL *tmpVidURL;
 @property (nonatomic, strong) GPUImageVideoCamera *videoCamera;
-@property (nonatomic, strong) GPUImageOutput<GPUImageInput> *filter;
+@property (nonatomic, strong) NSMutableArray<GPUImageOutput<GPUImageInput>*> *retroFilters;
+@property (nonatomic, strong) NSMutableArray<GPUImageOutput<GPUImageInput>*> *colorFilters;
+@property (nonatomic, strong) NSMutableArray<GPUImageOutput<GPUImageInput>*> *crushFilters;
+@property (nonatomic, assign) NSInteger currentRetroFilterIndex;
+@property (nonatomic, assign) NSInteger currentCrushFilterIndex;
 @property (nonatomic, strong) GPUImageMovieWriter *movieWriter;
 @property (nonatomic, assign) BOOL isRecording;
 @property (nonatomic, assign) BOOL isFlashOn;
 @property (retain, nonatomic) IBOutlet UIButton *recButton;
 @property (retain, nonatomic) IBOutlet UIButton *flashButton;
+@property (weak, nonatomic) IBOutlet UIButton *helpButton;
 @property (nonatomic, assign) BOOL cameraPermissionGranted;
 @property (nonatomic, assign) BOOL micPermissionGranted;
 @property (nonatomic, assign) BOOL photoPermissionGranted;
 @property (nonatomic, assign) BOOL permHintIsActive;
+@property (nonatomic, weak)   UIScrollView *helpView;
+@property (nonatomic, assign) NSTimeInterval tsHelpViewWasScrolled;
+@property (weak, nonatomic)   IBOutlet UILabel *recInfoLabel;
+@property (nonatomic, strong) IBOutlet NSTimer *recInfoLabelTimer;
+@property (nonatomic, assign) NSTimeInterval recInfoStartTime;
+@property (weak, nonatomic) IBOutlet UILabel *filterInfoLabel;
 @end
 
 @implementation SimpleVideoFilterViewController
@@ -22,6 +33,8 @@
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
+        _currentRetroFilterIndex = -1;
+        _currentCrushFilterIndex = -1;
     }
     
     return self;
@@ -46,15 +59,28 @@
         if (self.cameraPermissionGranted && self.micPermissionGranted && self.photoPermissionGranted) {
             [self showStartControls];
             self.view.backgroundColor = [UIColor lightGrayColor];
-            [self setBGToButton:self.recButton color:[UIColor colorWithWhite:0.0 alpha:0.15] cornerRadius:8.0];
-            [self setBGToButton:self.flashButton color:[UIColor colorWithWhite:0.0 alpha:0.15] cornerRadius:8.0];
+            [self setBGToView:self.recButton color:[UIColor colorWithWhite:0.0 alpha:0.15] cornerRadius:8.0];
+            [self setBGToView:self.flashButton color:[UIColor colorWithWhite:0.0 alpha:0.15] cornerRadius:8.0];
+            [self setBGToView:self.helpButton color:[UIColor colorWithWhite:0.0 alpha:0.15] cornerRadius:8.0];
+            [self setBGToView:self.filterInfoLabel color:[UIColor colorWithWhite:0.0 alpha:0.15] cornerRadius:8.0];
             [self setupPaths];
-            [self setupVideoCamera];
+            [self setupCircuit];
         }
         else {
             [self showPermHint];
         }
     }];
+    
+    UISwipeGestureRecognizer *swipeLeftGR = [[UISwipeGestureRecognizer alloc]initWithTarget:self action:@selector(onEffectSwipeLeft:)];
+    swipeLeftGR.direction=UISwipeGestureRecognizerDirectionLeft;
+    [self.view addGestureRecognizer:swipeLeftGR];
+    
+    UISwipeGestureRecognizer *swipeRightGR = [[UISwipeGestureRecognizer alloc]initWithTarget:self action:@selector(onEffectSwipeRight:)];
+    swipeRightGR.direction=UISwipeGestureRecognizerDirectionRight;
+    [self.view addGestureRecognizer:swipeRightGR];
+    
+    self.recInfoLabelTimer = [NSTimer scheduledTimerWithTimeInterval:0.5 target:self selector:@selector(onRecInfoLabelTimer:) userInfo:nil repeats:YES];
+    self.recInfoStartTime = -1;
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -68,11 +94,14 @@
 - (void)hideAllControls {
     self.recButton.hidden = YES;
     self.flashButton.hidden = YES;
+    self.helpButton.hidden = YES;
+    self.recInfoLabel.hidden = YES;
 }
 
 - (void)showStartControls {
     self.recButton.hidden = NO;
     self.flashButton.hidden = NO;
+    self.helpButton.hidden = NO;
 }
 
 - (void)requestPermissionsWithCallback:(dispatch_block_t)cb {
@@ -137,12 +166,13 @@
     self.tmpVidURL = [NSURL fileURLWithPath:pathToMovie];
 }
 
-- (void)setupVideoCamera {
+- (void)setupCircuit {
     self.videoCamera = [[GPUImageVideoCamera alloc] initWithSessionPreset:AVCaptureSessionPreset1920x1080 cameraPosition:AVCaptureDevicePositionBack];
     self.videoCamera.outputImageOrientation = UIInterfaceOrientationLandscapeRight;
     self.videoCamera.horizontallyMirrorFrontFacingCamera = NO;
     self.videoCamera.horizontallyMirrorRearFacingCamera = NO;
 
+    [self setupFilterChain];
 //    filter = [[GPUImageSepiaFilter alloc] init];
 //    filter.intensity = 1.0;
 //    filter = [[GPUImageTiltShiftFilter alloc] init];
@@ -156,21 +186,215 @@
 //    filter = [[GPUImageSmoothToonFilter alloc] init];
 //    GPUImageRotationFilter *rotationFilter = [[GPUImageRotationFilter alloc] initWithRotation:kGPUImageRotateRightFlipVertical];
     
-    self.filter = [[GPUImageCustomLUTFilter alloc] initWithLUTName:@"miss_etikate"];
+    [self recreateMovieWriter];
+    [self.videoCamera startCameraCapture];
+}
+
+- (void)setupFilterChain {
+    if (self.retroFilters.count) {
+        [self.videoCamera removeAllTargets];
+        [self.retroFilters enumerateObjectsUsingBlock:^(GPUImageOutput<GPUImageInput> *f, NSUInteger idx, BOOL * _Nonnull stop) {
+            [f removeAllTargets];
+        }];
+        [self.colorFilters enumerateObjectsUsingBlock:^(GPUImageOutput<GPUImageInput> *f, NSUInteger idx, BOOL * _Nonnull stop) {
+            [f removeAllTargets];
+        }];
+        [self.crushFilters enumerateObjectsUsingBlock:^(GPUImageOutput<GPUImageInput> *f, NSUInteger idx, BOOL * _Nonnull stop) {
+            [f removeAllTargets];
+        }];
+    }
+    else {
+        self.retroFilters = [NSMutableArray arrayWithCapacity:12];
     
-    [self.videoCamera addTarget:self.filter];
+        {
+            GPUImageOutput<GPUImageInput> *puyoF = [[GPUImageCustomLUTFilter alloc] initWithLUTName:@"puyo"];
+            puyoF.qevName = @"Mojo";
+            [self.retroFilters addObject:puyoF];
+        }
+    
+        {
+            GPUImageOutput<GPUImageInput> *birdF = [[GPUImageCustomLUTFilter alloc] initWithLUTName:@"bird"];
+            birdF.qevName = @"Bird";
+            [self.retroFilters addObject:birdF];
+        }
+        
+        {
+            GPUImageOutput<GPUImageInput> *brikF = [[GPUImageCustomLUTFilter alloc] initWithLUTName:@"brick"];
+            brikF.qevName = @"Brick";
+            [self.retroFilters addObject:brikF];
+        }
+        
+        {
+            GPUImageOutput<GPUImageInput> *etikateF = [[GPUImageCustomLUTFilter alloc] initWithLUTName:@"miss_etikate"];
+            etikateF.qevName = @"Funky times";
+            [self.retroFilters addObject:etikateF];
+        }
+        
+//        {
+//            GPUImageOutput<GPUImageInput> *elegF = [[GPUImageSoftEleganceFilter alloc] init];
+//            elegF.qevName = @"Eleg";
+//            [self.retroFilters addObject:elegF];
+//        }
+        
+        {
+            GPUImageSepiaFilter *sepiaF = [[GPUImageSepiaFilter alloc] init];
+            sepiaF.intensity = 1.0;
+            sepiaF.qevName = @"Sepia";
+            [self.retroFilters addObject:sepiaF];
+        }
+        
+        {
+            GPUImageSaturationFilter *satF = [[GPUImageSaturationFilter alloc] init];
+            satF.saturation = 0.0;
+            satF.qevName = @"Retro TV";
+            [self.retroFilters addObject:satF];
+        }
+        
+        {
+            GPUImageColorInvertFilter *invF = [[GPUImageColorInvertFilter alloc] init];
+            invF.qevName = @"Inversion";
+            [self.retroFilters addObject:invF];
+        }
+        
+        {
+            GPUImageFalseColorFilter *fcF = [[GPUImageFalseColorFilter alloc] init];
+            fcF.qevName = @"Alien";
+            [self.retroFilters addObject:fcF];
+        }
+        
+        {
+            GPUImageLowPassFilter *lpF = [[GPUImageLowPassFilter alloc] init];
+            lpF.qevName = @"Dizziness";
+            lpF.filterStrength = 0.55;
+            [self.retroFilters addObject:lpF];
+        }
+        
+        {
+            GPUImageMonochromeFilter *monoF = [[GPUImageMonochromeFilter alloc] init];
+            monoF.intensity = 1.0;
+            monoF.color = (GPUVector4){0.0, 1.0, 0.0, 1.0};
+            monoF.qevName = @"70's display";
+            [self.retroFilters addObject:monoF];
+        }
+        
+        self.colorFilters = [NSMutableArray arrayWithCapacity:4];
+        
+        {
+            GPUImageExposureFilter *f = [[GPUImageExposureFilter alloc] init];
+            [self.colorFilters addObject:f];
+        }
+        
+        {
+            GPUImageHSBFilter *f = [[GPUImageHSBFilter alloc] init];
+            [self.colorFilters addObject:f];
+        }
+        
+        self.crushFilters = [NSMutableArray arrayWithCapacity:4];
+        
+        {
+            GPUImagePixellateFilter *f = [[GPUImagePixellateFilter alloc] init];
+            f.fractionalWidthOfAPixel = 0.0;
+            [self.crushFilters addObject:f];
+        }
+        
+        {
+            GPUImagePolkaDotFilter *f = [[GPUImagePolkaDotFilter alloc] init];
+            f.fractionalWidthOfAPixel = 0.0;
+            [self.crushFilters addObject:f];
+        }
+        
+        {
+            GPUImageHalftoneFilter *f = [[GPUImageHalftoneFilter alloc] init];
+            f.fractionalWidthOfAPixel = 0.0;
+            [self.crushFilters addObject:f];
+        }
+        
+        {
+            GPUImageBrightnessFilter *f = [[GPUImageBrightnessFilter alloc] init];
+            f.brightness = 0.0;
+            [self.crushFilters addObject:f];
+        }
+        
+    }
+    
+    if (self.currentRetroFilterIndex >= 0) {
+        [self.videoCamera addTarget:self.retroFilters[self.currentRetroFilterIndex]];
+        [self.retroFilters[self.currentRetroFilterIndex] addTarget:self.colorFilters.firstObject];
+    }
+    else {
+        [self.videoCamera addTarget:self.colorFilters.firstObject];
+    }
+    
+    [self.colorFilters[0] addTarget:self.colorFilters[1]];
+    
     GPUImageView *camPreview = (GPUImageView *)self.view;
     camPreview.fillMode = kGPUImageFillModePreserveAspectRatioAndFill; //kGPUImageFillModeStretch
     
-    [self recreateMovieWriter];
-    [self.filter addTarget:camPreview];
+    if (self.currentCrushFilterIndex >= 0) {
+        [self.colorFilters.lastObject addTarget:self.crushFilters[self.currentCrushFilterIndex]];
+        [self.crushFilters[self.currentCrushFilterIndex] addTarget:camPreview];
+        if (self.movieWriter) {
+            [self.crushFilters[self.currentCrushFilterIndex] addTarget:self.movieWriter];
+        }
+    }
+    else {
+        [self.colorFilters.lastObject addTarget:camPreview];
+        if (self.movieWriter) {
+            [self.colorFilters.lastObject addTarget:self.movieWriter];
+        }
+    }
+}
+
+- (void)updateAfterRetroFilterChange {
+    [self.videoCamera removeAllTargets];
+    [self.retroFilters enumerateObjectsUsingBlock:^(GPUImageOutput<GPUImageInput> *f, NSUInteger idx, BOOL * _Nonnull stop) {
+        [f removeAllTargets];
+    }];
     
-    [self.videoCamera startCameraCapture];
+    if (self.currentRetroFilterIndex >= 0) {
+        [self.videoCamera addTarget:self.retroFilters[self.currentRetroFilterIndex]];
+        [self.retroFilters[self.currentRetroFilterIndex] addTarget:self.colorFilters.firstObject];
+        self.filterInfoLabel.text = self.retroFilters[self.currentRetroFilterIndex].qevName;
+    }
+    else {
+        [self.videoCamera addTarget:self.colorFilters.firstObject];
+        self.filterInfoLabel.text = @"No filter";
+    }
+}
+
+- (void)updateAfterCrushFilterIndexChange {
+    [self.colorFilters.lastObject removeAllTargets];
+    [self.crushFilters enumerateObjectsUsingBlock:^(GPUImageOutput<GPUImageInput> *f, NSUInteger idx, BOOL * _Nonnull stop) {
+        [f removeAllTargets];
+    }];
+    
+    GPUImageView *camPreview = (GPUImageView *)self.view;
+    camPreview.fillMode = kGPUImageFillModePreserveAspectRatioAndFill; //kGPUImageFillModeStretch
+    
+    if (self.currentCrushFilterIndex >= 0) {
+        [self.colorFilters.lastObject addTarget:self.crushFilters[self.currentCrushFilterIndex]];
+        [self.crushFilters[self.currentCrushFilterIndex] addTarget:camPreview];
+        if (self.movieWriter) {
+            [self.crushFilters[self.currentCrushFilterIndex] addTarget:self.movieWriter];
+        }
+    }
+    else {
+        [self.colorFilters.lastObject addTarget:camPreview];
+        if (self.movieWriter) {
+            [self.colorFilters.lastObject addTarget:self.movieWriter];
+        }
+    }
 }
 
 - (void)recreateMovieWriter {
     if (self.movieWriter) {
-        [self.filter removeTarget:self.movieWriter];
+        if (self.currentCrushFilterIndex >= 0) {
+            [self.crushFilters[self.currentCrushFilterIndex] removeTarget:self.movieWriter];
+        }
+        else {
+            [self.colorFilters.lastObject removeTarget:self.movieWriter];
+        }
+        
         self.videoCamera.audioEncodingTarget = nil;
         self.movieWriter = nil;
         [self setupPaths];
@@ -178,7 +402,13 @@
     
     self.movieWriter = [[GPUImageMovieWriter alloc] initWithMovieURL:self.tmpVidURL size:CGSizeMake(1920.0, 1080.0)];
     self.movieWriter.encodingLiveVideo = YES;
-    [self.filter addTarget:self.movieWriter];
+    if (self.currentCrushFilterIndex >= 0) {
+        [self.crushFilters[self.currentCrushFilterIndex] addTarget:self.movieWriter];
+    }
+    else {
+        [self.colorFilters.lastObject addTarget:self.movieWriter];
+    }
+    
     self.videoCamera.audioEncodingTarget = self.movieWriter;
 }
 
@@ -190,23 +420,26 @@
     return NO; // Support all orientations.
 }
 
-- (IBAction)updateSliderValue:(id)sender {
-    [(GPUImageSepiaFilter *)self.filter setIntensity:[(UISlider *)sender value]];
-}
-
 - (IBAction)onRecButton:(id)sender {
+    if (self.helpView) {
+        [self hideHelp];
+        return;
+    }
+    
     if (!self.isRecording) {
         NSLog(@"Start recording");
-        
+        self.recInfoStartTime = CACurrentMediaTime();
         [self.movieWriter startRecording];
         
         self.isRecording = YES;
         [self.recButton setTitle:@"■" forState:UIControlStateNormal];
+        self.recInfoLabel.hidden = NO;
     }
     else {
         [self.movieWriter finishRecording];
         [self.videoCamera stopCameraCapture];
         NSLog(@"Movie completed");
+        self.recInfoStartTime = -1;
         
         ALAssetsLibrary *library = [[ALAssetsLibrary alloc] init];
         if ([library videoAtPathIsCompatibleWithSavedPhotosAlbum:self.tmpVidURL])
@@ -224,6 +457,9 @@
 //                     }
                      
                      self.isRecording = NO;
+                     self.isFlashOn = NO;
+                     [self onFlashStateUpdated];
+                     self.recInfoLabel.hidden = YES;
                      [self.recButton setTitle:@"●" forState:UIControlStateNormal];
                      [self recreateMovieWriter];
                      [self.videoCamera startCameraCapture];
@@ -234,22 +470,31 @@
 }
 
 - (IBAction)onFlashButton:(id)sender {
+    if (self.helpView) {
+        [self hideHelp];
+        return;
+    }
+    
     if (!self.videoCamera.hasFlash) {
         return;
     }
     
     self.isFlashOn = !self.isFlashOn;
     
+    [self.videoCamera.inputCamera lockForConfiguration:nil];
+    [self.videoCamera.inputCamera setTorchMode:self.isFlashOn ? AVCaptureTorchModeOn : AVCaptureTorchModeOff];
+    [self.videoCamera.inputCamera unlockForConfiguration];
+    
+    [self onFlashStateUpdated];
+}
+
+- (void)onFlashStateUpdated {
     if (self.isFlashOn) {
         [self.flashButton setImage:[UIImage imageNamed:@"torch_icon_w"] forState:UIControlStateNormal];
     }
     else {
         [self.flashButton setImage:[UIImage imageNamed:@"torch_icon"] forState:UIControlStateNormal];
     }
-    
-    [self.videoCamera.inputCamera lockForConfiguration:nil];
-    [self.videoCamera.inputCamera setTorchMode:self.isFlashOn ? AVCaptureTorchModeOn : AVCaptureTorchModeOff];
-    [self.videoCamera.inputCamera unlockForConfiguration];
 }
 
 - (void)setHaloToButton:(UIButton *)btn color:(UIColor *)clr radius:(CGFloat)radius offset:(CGSize)offset {
@@ -260,9 +505,9 @@
     btn.titleLabel.layer.masksToBounds = NO;
 }
 
-- (void)setBGToButton:(UIButton *)btn color:(UIColor *)clr cornerRadius:(CGFloat)radius {
-    btn.layer.cornerRadius = radius;
-    btn.layer.backgroundColor = clr.CGColor;
+- (void)setBGToView:(UIView *)view color:(UIColor *)clr cornerRadius:(CGFloat)radius {
+    view.layer.cornerRadius = radius;
+    view.layer.backgroundColor = clr.CGColor;
 }
 
 - (void)dealloc {
@@ -272,6 +517,135 @@
 
 - (BOOL)prefersStatusBarHidden {
     return YES;
+}
+
+- (IBAction)onHelpButton:(id)sender {
+    if (self.helpView) {
+        [self hideHelp];
+        return;
+    }
+    else {
+        [self showHelp];
+    }
+}
+
+- (void)showHelp {
+    UITextView *tv = [UITextView new];
+    tv.translatesAutoresizingMaskIntoConstraints = NO;
+    tv.scrollEnabled = YES;
+    tv.userInteractionEnabled = YES;
+    tv.backgroundColor = [UIColor colorWithWhite:0.0 alpha:0.20];
+    tv.textColor = [UIColor whiteColor];
+    tv.font = [UIFont systemFontOfSize:15.0];
+    tv.textContainer.lineFragmentPadding = 16.0;
+    tv.alwaysBounceHorizontal = NO;
+    tv.showsHorizontalScrollIndicator = NO;
+    tv.layer.cornerRadius = 8.0;
+    tv.editable = NO;
+    tv.text = @"abc\nabc\nabc\nabc\nabc\nabc\nabc\nabc\nabc\nabc\nabc\nabc\nabc\nabc\nabc\nabc\nabc\nabc\nabc\nabc\nabc\nabc\nabc\nabc\nabc\nabc\nabc\nabc\nabc\nabc\nabc\nabc\nabc";
+    tv.alpha = 0.0;
+    [self.view addSubview:tv];
+    
+    [self.view.centerXAnchor constraintEqualToAnchor:tv.centerXAnchor].active = YES;
+    [self.view.centerYAnchor constraintEqualToAnchor:tv.centerYAnchor].active = YES;
+    [tv.widthAnchor constraintEqualToConstant:400.0].active = YES;
+    [tv.heightAnchor constraintEqualToConstant:288.0].active = YES;
+    
+    tv.delegate = self;
+    
+    [tv addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(hideHelp)]];
+    
+    self.helpView = tv;
+    
+    [UIView animateWithDuration:0.25 animations:^{
+        tv.alpha = 1.0;
+    }];
+}
+
+- (void)hideHelp {
+    [UIView animateWithDuration:0.25 animations:^
+    {
+        self.helpView.alpha = 0.0;
+    }
+                     completion:^(BOOL finished)
+    {
+        self.helpView.delegate = nil;
+        [self.helpView removeFromSuperview];
+        self.helpView = nil;
+    }];
+}
+
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
+    _tsHelpViewWasScrolled = CACurrentMediaTime();
+}
+
+//override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
+//    if let _ = event?.touches(for: renderView)?.first {
+//        picout.onlyCaptureNextFrame = true
+//
+//        picout.imageAvailableCallback = {image in
+//            PHPhotoLibrary.shared().performChanges({
+//                _ = PHAssetChangeRequest.creationRequestForAsset(from: image)
+//            }) { (_, _) in
+//                //UIImageWriteToSavedPhotosAlbum(image, self, #selector(self.image(_:didFinishSavingWithError:contextInfo:)), nil)
+//            }
+//        }
+//    }
+//}
+
+- (void)touchesEnded:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
+    if (self.helpView != nil) {
+        if (CACurrentMediaTime() - _tsHelpViewWasScrolled > 0.5) {
+            [self hideHelp];
+        }
+    }
+}
+
+- (void)onEffectSwipeLeft:(UISwipeGestureRecognizer*)gestureRecognizer {
+    if (self.retroFilters.count == 0 || self.helpView != nil) {
+        return;
+    }
+    
+    if (self.currentRetroFilterIndex == 0) {
+        self.currentRetroFilterIndex = -1;
+    }
+    else if (self.currentRetroFilterIndex == -1) {
+        self.currentRetroFilterIndex = self.retroFilters.count - 1;
+    }
+    else {
+        self.currentRetroFilterIndex--;
+    }
+    
+    [self updateAfterRetroFilterChange];
+}
+
+- (void)onEffectSwipeRight:(UISwipeGestureRecognizer*)gestureRecognizer {
+    if (self.retroFilters.count == 0 || self.helpView != nil) {
+        return;
+    }
+    
+    if (self.currentRetroFilterIndex == (self.retroFilters.count - 1)) {
+        self.currentRetroFilterIndex = -1;
+    }
+    else if (self.currentRetroFilterIndex == -1) {
+        self.currentRetroFilterIndex = 0;
+    }
+    else {
+        self.currentRetroFilterIndex++;
+    }
+    
+    [self updateAfterRetroFilterChange];
+}
+
+- (void)onRecInfoLabelTimer:(id)sender {
+    if (self.recInfoStartTime > 0) {
+        NSUInteger elapsedSeconds = (int)(CACurrentMediaTime() - self.recInfoStartTime);
+        NSUInteger h = elapsedSeconds / 3600;
+        NSUInteger m = (elapsedSeconds / 60) % 60;
+        NSUInteger s = elapsedSeconds % 60;
+        NSString *formattedTime = [NSString stringWithFormat:@"● %02u:%02u:%02u", h, m, s];
+        self.recInfoLabel.text = formattedTime;
+    }
 }
 
 @end

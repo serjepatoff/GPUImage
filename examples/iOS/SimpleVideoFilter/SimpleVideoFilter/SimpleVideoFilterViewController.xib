@@ -10,8 +10,11 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="SimpleVideoFilterViewController">
             <connections>
+                <outlet property="filterInfoLabel" destination="roZ-WT-1mc" id="PmG-jc-ryY"/>
                 <outlet property="flashButton" destination="jBb-M5-ZhT" id="w42-FD-5Cq"/>
+                <outlet property="helpButton" destination="t7F-NC-APN" id="N6Q-zg-pvE"/>
                 <outlet property="recButton" destination="XTE-HU-4XV" id="aev-2Q-2KJ"/>
+                <outlet property="recInfoLabel" destination="fXd-yu-1Sg" id="DVM-Ur-b0I"/>
                 <outlet property="view" destination="1" id="3"/>
             </connections>
         </placeholder>
@@ -34,6 +37,22 @@
                         <action selector="onRecButton:" destination="-1" eventType="touchUpInside" id="COL-f0-jn0"/>
                     </connections>
                 </button>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="t7F-NC-APN">
+                    <rect key="frame" x="844" y="394" width="50" height="50"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="50" id="PjR-8x-nPS"/>
+                        <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="50" id="kUT-W4-CVy"/>
+                        <constraint firstAttribute="height" constant="50" id="mL8-xA-RYo"/>
+                        <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="50" id="sHO-Sw-Yw8"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="boldSystem" pointSize="34"/>
+                    <state key="normal" title="?">
+                        <color key="titleColor" cocoaTouchSystemColor="lightTextColor"/>
+                    </state>
+                    <connections>
+                        <action selector="onHelpButton:" destination="-1" eventType="touchUpInside" id="1Kh-E0-tmh"/>
+                    </connections>
+                </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jBb-M5-ZhT">
                     <rect key="frame" x="844" y="16" width="50" height="50"/>
                     <constraints>
@@ -51,13 +70,39 @@
                         <action selector="onFlashButton:" destination="-1" eventType="touchUpInside" id="ki0-1z-CPI"/>
                     </connections>
                 </button>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="00:00:00" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fXd-yu-1Sg">
+                    <rect key="frame" x="587" y="423" width="217" height="21"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="217" id="Cgc-WK-Stp"/>
+                        <constraint firstAttribute="height" constant="21" id="VFd-iv-Cfb"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                    <color key="textColor" red="1" green="0.23137254900000001" blue="0.18823529410000001" alpha="0.59999999999999998" colorSpace="custom" customColorSpace="sRGB"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="No filter" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="roZ-WT-1mc">
+                    <rect key="frame" x="346.5" y="16" width="217" height="21"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="21" id="F6v-sP-M3f"/>
+                        <constraint firstAttribute="width" constant="217" id="pGZ-2o-4MX"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                    <color key="textColor" cocoaTouchSystemColor="lightTextColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
             </subviews>
             <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
             <constraints>
                 <constraint firstItem="Ae2-xZ-O7E" firstAttribute="trailing" secondItem="XTE-HU-4XV" secondAttribute="trailing" constant="16" id="1aU-M9-Ibx"/>
+                <constraint firstAttribute="bottom" secondItem="fXd-yu-1Sg" secondAttribute="bottom" constant="16" id="5Y2-M1-ocZ"/>
                 <constraint firstItem="XTE-HU-4XV" firstAttribute="centerY" secondItem="1" secondAttribute="centerY" id="HAu-rd-7gk"/>
+                <constraint firstItem="roZ-WT-1mc" firstAttribute="centerX" secondItem="1" secondAttribute="centerX" id="dWZ-qy-HNW"/>
+                <constraint firstAttribute="bottom" secondItem="t7F-NC-APN" secondAttribute="bottom" constant="16" id="gwt-Fx-9wE"/>
+                <constraint firstItem="roZ-WT-1mc" firstAttribute="top" secondItem="1" secondAttribute="top" constant="16" id="qvn-48-lZU"/>
+                <constraint firstItem="Ae2-xZ-O7E" firstAttribute="trailing" secondItem="t7F-NC-APN" secondAttribute="trailing" constant="16" id="skR-DA-i2K"/>
                 <constraint firstItem="Ae2-xZ-O7E" firstAttribute="trailing" secondItem="jBb-M5-ZhT" secondAttribute="trailing" constant="16" id="sww-yo-npM"/>
                 <constraint firstItem="jBb-M5-ZhT" firstAttribute="top" secondItem="1" secondAttribute="top" constant="16" id="uou-Dp-DiT"/>
+                <constraint firstItem="t7F-NC-APN" firstAttribute="leading" secondItem="fXd-yu-1Sg" secondAttribute="trailing" constant="40" id="zev-g8-fy3"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <viewLayoutGuide key="safeArea" id="Ae2-xZ-O7E"/>
