@@ -15,9 +15,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "BCB5DDC914E86899000AF3C2"
-               BuildableName = "SimpleVideoFilter.app"
-               BlueprintName = "SimpleVideoFilter"
-               ReferencedContainer = "container:SimpleVideoFilter.xcodeproj">
+               BuildableName = "QEV Cam.app"
+               BlueprintName = "QEVCam"
+               ReferencedContainer = "container:QEVCam.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -31,9 +31,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "BCB5DDC914E86899000AF3C2"
-            BuildableName = "SimpleVideoFilter.app"
-            BlueprintName = "SimpleVideoFilter"
-            ReferencedContainer = "container:SimpleVideoFilter.xcodeproj">
+            BuildableName = "QEV Cam.app"
+            BlueprintName = "QEVCam"
+            ReferencedContainer = "container:QEVCam.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
       <Testables>
@@ -54,9 +54,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "BCB5DDC914E86899000AF3C2"
-            BuildableName = "SimpleVideoFilter.app"
-            BlueprintName = "SimpleVideoFilter"
-            ReferencedContainer = "container:SimpleVideoFilter.xcodeproj">
+            BuildableName = "QEV Cam.app"
+            BlueprintName = "QEVCam"
+            ReferencedContainer = "container:QEVCam.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </LaunchAction>
@@ -71,9 +71,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "BCB5DDC914E86899000AF3C2"
-            BuildableName = "SimpleVideoFilter.app"
-            BlueprintName = "SimpleVideoFilter"
-            ReferencedContainer = "container:SimpleVideoFilter.xcodeproj">
+            BuildableName = "QEV Cam.app"
+            BlueprintName = "QEVCam"
+            ReferencedContainer = "container:QEVCam.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>

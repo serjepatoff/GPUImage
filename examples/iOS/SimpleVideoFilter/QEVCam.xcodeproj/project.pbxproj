@@ -69,7 +69,7 @@
 		BCB5DDD614E86899000AF3C2 /* QEVCamInfo.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = QEVCamInfo.plist; sourceTree = "<group>"; };
 		BCB5DDD814E86899000AF3C2 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		BCB5DDDA14E86899000AF3C2 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		BCB5DDDC14E86899000AF3C2 /* SimpleVideoFilter-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "SimpleVideoFilter-Prefix.pch"; sourceTree = "<group>"; };
+		BCB5DDDC14E86899000AF3C2 /* QEVCam-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "QEVCam-Prefix.pch"; sourceTree = "<group>"; };
 		BCB5DDDD14E86899000AF3C2 /* SimpleVideoFilterAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SimpleVideoFilterAppDelegate.h; sourceTree = "<group>"; };
 		BCB5DDDE14E86899000AF3C2 /* SimpleVideoFilterAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SimpleVideoFilterAppDelegate.m; sourceTree = "<group>"; };
 		BCB5DDE514E868C0000AF3C2 /* SimpleVideoFilterViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SimpleVideoFilterViewController.h; sourceTree = "<group>"; };
@@ -184,7 +184,7 @@
 				BCB5DDD614E86899000AF3C2 /* QEVCamInfo.plist */,
 				BCB5DDD714E86899000AF3C2 /* InfoPlist.strings */,
 				BCB5DDDA14E86899000AF3C2 /* main.m */,
-				BCB5DDDC14E86899000AF3C2 /* SimpleVideoFilter-Prefix.pch */,
+				BCB5DDDC14E86899000AF3C2 /* QEVCam-Prefix.pch */,
 				CE9FBB4124922E93001DB868 /* LaunchScreen.storyboard */,
 			);
 			name = "Supporting Files";
@@ -202,9 +202,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		BCB5DDC914E86899000AF3C2 /* SimpleVideoFilter */ = {
+		BCB5DDC914E86899000AF3C2 /* QEVCam */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = BCB5DDE214E86899000AF3C2 /* Build configuration list for PBXNativeTarget "SimpleVideoFilter" */;
+			buildConfigurationList = BCB5DDE214E86899000AF3C2 /* Build configuration list for PBXNativeTarget "QEVCam" */;
 			buildPhases = (
 				BCB5DDC614E86899000AF3C2 /* Sources */,
 				BCB5DDC714E86899000AF3C2 /* Frameworks */,
@@ -215,7 +215,7 @@
 			dependencies = (
 				BCF867501725AB4E00912E34 /* PBXTargetDependency */,
 			);
-			name = SimpleVideoFilter;
+			name = QEVCam;
 			productName = SimpleVideoFilter;
 			productReference = BCB5DDCA14E86899000AF3C2 /* QEV Cam.app */;
 			productType = "com.apple.product-type.application";
@@ -234,7 +234,7 @@
 					};
 				};
 			};
-			buildConfigurationList = BCB5DDC414E86899000AF3C2 /* Build configuration list for PBXProject "SimpleVideoFilter" */;
+			buildConfigurationList = BCB5DDC414E86899000AF3C2 /* Build configuration list for PBXProject "QEVCam" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -253,7 +253,7 @@
 			);
 			projectRoot = "";
 			targets = (
-				BCB5DDC914E86899000AF3C2 /* SimpleVideoFilter */,
+				BCB5DDC914E86899000AF3C2 /* QEVCam */,
 			);
 		};
 /* End PBXProject section */
@@ -410,7 +410,7 @@
 				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = F866RBRTQQ;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "SimpleVideoFilter/SimpleVideoFilter-Prefix.pch";
+				GCC_PREFIX_HEADER = "SimpleVideoFilter/QEVCam-Prefix.pch";
 				INFOPLIST_FILE = SimpleVideoFilter/QEVCAmInfo.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				MARKETING_VERSION = 1.0;
@@ -428,7 +428,7 @@
 				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = F866RBRTQQ;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "SimpleVideoFilter/SimpleVideoFilter-Prefix.pch";
+				GCC_PREFIX_HEADER = "SimpleVideoFilter/QEVCam-Prefix.pch";
 				INFOPLIST_FILE = SimpleVideoFilter/QEVCAmInfo.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				MARKETING_VERSION = 1.0;
@@ -441,7 +441,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		BCB5DDC414E86899000AF3C2 /* Build configuration list for PBXProject "SimpleVideoFilter" */ = {
+		BCB5DDC414E86899000AF3C2 /* Build configuration list for PBXProject "QEVCam" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				BCB5DDE014E86899000AF3C2 /* Debug */,
@@ -450,7 +450,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		BCB5DDE214E86899000AF3C2 /* Build configuration list for PBXNativeTarget "SimpleVideoFilter" */ = {
+		BCB5DDE214E86899000AF3C2 /* Build configuration list for PBXNativeTarget "QEVCam" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				BCB5DDE314E86899000AF3C2 /* Debug */,
