@@ -1,5 +1,6 @@
 #import "SimpleVideoFilterViewController.h"
 #import <AssetsLibrary/ALAssetsLibrary.h>
+#import <Photos/Photos.h>
 
 @interface SimpleVideoFilterViewController ()
 @property (nonatomic, strong) NSURL *tmpVidURL;
@@ -10,6 +11,10 @@
 @property (nonatomic, assign) BOOL isFlashOn;
 @property (retain, nonatomic) IBOutlet UIButton *recButton;
 @property (retain, nonatomic) IBOutlet UIButton *flashButton;
+@property (nonatomic, assign) BOOL cameraPermissionGranted;
+@property (nonatomic, assign) BOOL micPermissionGranted;
+@property (nonatomic, assign) BOOL photoPermissionGranted;
+@property (nonatomic, assign) BOOL permHintIsActive;
 @end
 
 @implementation SimpleVideoFilterViewController
@@ -30,11 +35,96 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    //[self setHaloToButton:self.recButton color:[UIColor blackColor] radius:4.0 offset:CGSizeMake(0, 0)];
-    [self setBGToButton:self.recButton color:[UIColor colorWithWhite:0.0 alpha:0.15] cornerRadius:8.0];
-    [self setBGToButton:self.flashButton color:[UIColor colorWithWhite:0.0 alpha:0.15] cornerRadius:8.0];
+    [self loadAll];
+}
+
+- (void)loadAll {
+    self.view.backgroundColor = [UIColor blackColor];
+    [self hideAllControls];
     [self setupPaths];
-    [self setupVideoCamera];
+    [self requestPermissionsWithCallback:^{
+        if (self.cameraPermissionGranted && self.micPermissionGranted && self.photoPermissionGranted) {
+            [self showStartControls];
+            self.view.backgroundColor = [UIColor lightGrayColor];
+            [self setBGToButton:self.recButton color:[UIColor colorWithWhite:0.0 alpha:0.15] cornerRadius:8.0];
+            [self setBGToButton:self.flashButton color:[UIColor colorWithWhite:0.0 alpha:0.15] cornerRadius:8.0];
+            [self setupPaths];
+            [self setupVideoCamera];
+        }
+        else {
+            [self showPermHint];
+        }
+    }];
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    if (self.permHintIsActive) {
+        self.permHintIsActive = NO;
+        [self loadAll];
+    }
+}
+
+- (void)hideAllControls {
+    self.recButton.hidden = YES;
+    self.flashButton.hidden = YES;
+}
+
+- (void)showStartControls {
+    self.recButton.hidden = NO;
+    self.flashButton.hidden = NO;
+}
+
+- (void)requestPermissionsWithCallback:(dispatch_block_t)cb {
+    dispatch_block_t cb2 = ^() {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            cb();
+        });
+    };
+    
+    [AVCaptureDevice requestAccessForMediaType:AVMediaTypeVideo completionHandler:^(BOOL granted1) {
+        self.cameraPermissionGranted = granted1;
+        [AVCaptureDevice requestAccessForMediaType:AVMediaTypeAudio completionHandler:^(BOOL granted2) {
+            self.micPermissionGranted = granted2;
+            PHAuthorizationStatus photoStatus = [PHPhotoLibrary authorizationStatus];
+            self.photoPermissionGranted = (photoStatus == PHAuthorizationStatusAuthorized);
+            if (self.photoPermissionGranted) {
+                cb2();
+                return;
+            }
+            
+            [PHPhotoLibrary requestAuthorization:^(PHAuthorizationStatus photoStatus2) {
+                self.photoPermissionGranted = (photoStatus2 == PHAuthorizationStatusAuthorized);
+                cb2();
+                return;
+            }];
+        }];
+    }];
+}
+
+- (void)showPermHint {
+    UIImageView *iv = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"qevcam1024.png"]];
+    iv.translatesAutoresizingMaskIntoConstraints = NO;
+    
+    iv.contentMode = UIViewContentModeScaleToFill;
+    
+    [self.view addSubview:iv];
+    [self.view.centerXAnchor constraintEqualToAnchor:iv.centerXAnchor].active = YES;
+    [self.view.centerYAnchor constraintEqualToAnchor:iv.centerYAnchor].active = YES;
+    [iv.widthAnchor constraintEqualToConstant:128.0].active = YES;
+    [iv.heightAnchor constraintEqualToConstant:128.0].active = YES;
+    
+    UILabel *lbl = [[UILabel alloc] init];
+    lbl.translatesAutoresizingMaskIntoConstraints = NO;
+    lbl.textAlignment = NSTextAlignmentCenter;
+    lbl.numberOfLines = 2;
+    [lbl setText:@"Go to Settings->QEV Cam\nand allow access to Microphone, Camera and Photo Album"];
+    [lbl setFont:[UIFont systemFontOfSize:16.0]];
+    [lbl setTextColor:[UIColor lightTextColor]];
+    [self.view addSubview:lbl];
+    [lbl.topAnchor constraintEqualToAnchor:iv.bottomAnchor constant:-8.0].active = YES;
+    [lbl.centerXAnchor constraintEqualToAnchor:iv.centerXAnchor constant:0.0].active = YES;
+    self.permHintIsActive = YES;
 }
 
 - (UIInterfaceOrientationMask)supportedInterfaceOrientations {
@@ -52,8 +142,6 @@
     self.videoCamera.outputImageOrientation = UIInterfaceOrientationLandscapeRight;
     self.videoCamera.horizontallyMirrorFrontFacingCamera = NO;
     self.videoCamera.horizontallyMirrorRearFacingCamera = NO;
-    
-    self.flashButton.hidden = !self.videoCamera.hasFlash;
 
 //    filter = [[GPUImageSepiaFilter alloc] init];
 //    filter.intensity = 1.0;
@@ -146,13 +234,17 @@
 }
 
 - (IBAction)onFlashButton:(id)sender {
+    if (!self.videoCamera.hasFlash) {
+        return;
+    }
+    
     self.isFlashOn = !self.isFlashOn;
     
     if (self.isFlashOn) {
-        
+        [self.flashButton setImage:[UIImage imageNamed:@"torch_icon_w"] forState:UIControlStateNormal];
     }
     else {
-        
+        [self.flashButton setImage:[UIImage imageNamed:@"torch_icon"] forState:UIControlStateNormal];
     }
     
     [self.videoCamera.inputCamera lockForConfiguration:nil];
@@ -177,4 +269,9 @@
     self.recButton = nil;
     self.flashButton = nil;
 }
+
+- (BOOL)prefersStatusBarHidden {
+    return YES;
+}
+
 @end

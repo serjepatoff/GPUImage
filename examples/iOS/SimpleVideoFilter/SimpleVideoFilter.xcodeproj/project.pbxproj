@@ -31,6 +31,8 @@
 		CE9FBB40249216FD001DB868 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CE9FBB3F249216FD001DB868 /* Images.xcassets */; };
 		CE9FBB4224922E93001DB868 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CE9FBB4124922E93001DB868 /* LaunchScreen.storyboard */; };
 		CE9FBB4424922F97001DB868 /* qevcam1024.png in Resources */ = {isa = PBXBuildFile; fileRef = CE9FBB4324922F97001DB868 /* qevcam1024.png */; };
+		CE9FBB4624924B66001DB868 /* Photos.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CE9FBB4524924B66001DB868 /* Photos.framework */; };
+		CE9FBB4B2492623D001DB868 /* torch_icon_w.png in Resources */ = {isa = PBXBuildFile; fileRef = CE9FBB4A2492623D001DB868 /* torch_icon_w.png */; };
 		D30ACF271BAFE43F00E9759C /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D30ACF261BAFE43F00E9759C /* AssetsLibrary.framework */; };
 /* End PBXBuildFile section */
 
@@ -88,6 +90,8 @@
 		CE9FBB3F249216FD001DB868 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		CE9FBB4124922E93001DB868 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
 		CE9FBB4324922F97001DB868 /* qevcam1024.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = qevcam1024.png; sourceTree = "<group>"; };
+		CE9FBB4524924B66001DB868 /* Photos.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Photos.framework; path = System/Library/Frameworks/Photos.framework; sourceTree = SDKROOT; };
+		CE9FBB4A2492623D001DB868 /* torch_icon_w.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = torch_icon_w.png; sourceTree = "<group>"; };
 		D30ACF261BAFE43F00E9759C /* AssetsLibrary.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AssetsLibrary.framework; path = System/Library/Frameworks/AssetsLibrary.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
@@ -105,6 +109,7 @@
 				BCB5DDF914E876DD000AF3C2 /* AVFoundation.framework in Frameworks */,
 				BCB5DDCF14E86899000AF3C2 /* UIKit.framework in Frameworks */,
 				BCB5DDD114E86899000AF3C2 /* Foundation.framework in Frameworks */,
+				CE9FBB4624924B66001DB868 /* Photos.framework in Frameworks */,
 				BCB5DDD314E86899000AF3C2 /* CoreGraphics.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -132,6 +137,7 @@
 		BCB5DDCD14E86899000AF3C2 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				CE9FBB4524924B66001DB868 /* Photos.framework */,
 				D30ACF261BAFE43F00E9759C /* AssetsLibrary.framework */,
 				BCB5DDEA14E8756A000AF3C2 /* GPUImage.xcodeproj */,
 				BCB5DE0014E87789000AF3C2 /* OpenGLES.framework */,
@@ -151,6 +157,7 @@
 			children = (
 				CE9FBB4324922F97001DB868 /* qevcam1024.png */,
 				CE9FBB3D2492125F001DB868 /* torch_icon.png */,
+				CE9FBB4A2492623D001DB868 /* torch_icon_w.png */,
 				CE9FBB352491F4FA001DB868 /* lookup_bird.jpg */,
 				CE9FBB362491F4FA001DB868 /* lookup_brick.jpg */,
 				CE9FBB372491F4FA001DB868 /* lookup_miss_etikate.jpg */,
@@ -271,6 +278,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				BCB5DDD914E86899000AF3C2 /* InfoPlist.strings in Resources */,
+				CE9FBB4B2492623D001DB868 /* torch_icon_w.png in Resources */,
 				CE9FBB3E2492125F001DB868 /* torch_icon.png in Resources */,
 				BCB5DDE914E868C0000AF3C2 /* SimpleVideoFilterViewController.xib in Resources */,
 				CE9FBB2724917A6C001DB868 /* lookup_soft_elegance_2.png in Resources */,
