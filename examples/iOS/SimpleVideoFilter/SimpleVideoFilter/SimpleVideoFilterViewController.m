@@ -8,8 +8,13 @@
 @property (nonatomic, strong) NSMutableArray<GPUImageOutput<GPUImageInput>*> *retroFilters;
 @property (nonatomic, strong) NSMutableArray<GPUImageOutput<GPUImageInput>*> *colorFilters;
 @property (nonatomic, strong) NSMutableArray<GPUImageOutput<GPUImageInput>*> *crushFilters;
+@property (nonatomic, weak)  GPUImageOutput<GPUImageInput> *activeCrushFilter;
 @property (nonatomic, assign) NSInteger currentRetroFilterIndex;
 @property (nonatomic, assign) NSInteger currentCrushFilterIndex;
+@property (nonatomic, assign) BOOL crushFilterRampingUp;
+@property (nonatomic, assign) CGFloat crushFilterTau;
+@property (nonatomic, assign) CGFloat crushFilterLowValue;
+@property (nonatomic, assign) CGFloat crushFilterHighValue;
 @property (nonatomic, strong) GPUImageMovieWriter *movieWriter;
 @property (nonatomic, assign) BOOL isRecording;
 @property (nonatomic, assign) BOOL isFlashOn;
@@ -24,6 +29,7 @@
 @property (nonatomic, assign) NSTimeInterval tsHelpViewWasScrolled;
 @property (weak, nonatomic)   IBOutlet UILabel *recInfoLabel;
 @property (nonatomic, strong)          NSTimer *recInfoLabelTimer;
+@property (nonatomic, assign)          NSInteger timerTicks;
 @property (nonatomic, assign) NSTimeInterval recInfoStartTime;
 @property (weak, nonatomic) IBOutlet UILabel *filterInfoLabel;
 @property (weak, nonatomic) IBOutlet UIButton *dotsCrushBtn;
@@ -87,7 +93,7 @@
     swipeRightGR.direction=UISwipeGestureRecognizerDirectionRight;
     [self.view addGestureRecognizer:swipeRightGR];
     
-    self.recInfoLabelTimer = [NSTimer scheduledTimerWithTimeInterval:0.5 target:self selector:@selector(onRecInfoLabelTimer:) userInfo:nil repeats:YES];
+    self.recInfoLabelTimer = [NSTimer scheduledTimerWithTimeInterval:0.033333 target:self selector:@selector(onRecInfoLabelTimer:) userInfo:nil repeats:YES];
     self.recInfoStartTime = -1;
 }
 
@@ -308,29 +314,34 @@
         self.crushFilters = [NSMutableArray arrayWithCapacity:4];
         
         {
-            GPUImagePixellateFilter *f = [[GPUImagePixellateFilter alloc] init];
-            f.fractionalWidthOfAPixel = 0.0;
-            [self.crushFilters addObject:f];
-        }
-        
-        {
             GPUImagePolkaDotFilter *f = [[GPUImagePolkaDotFilter alloc] init];
-            f.fractionalWidthOfAPixel = 0.0;
-            [self.crushFilters addObject:f];
-        }
-        
-        {
-            GPUImageHalftoneFilter *f = [[GPUImageHalftoneFilter alloc] init];
+            f.qevName = @"dots";
             f.fractionalWidthOfAPixel = 0.0;
             [self.crushFilters addObject:f];
         }
         
         {
             GPUImageBrightnessFilter *f = [[GPUImageBrightnessFilter alloc] init];
+            f.qevName = @"ftb";
             f.brightness = 0.0;
             [self.crushFilters addObject:f];
         }
         
+        {
+            GPUImagePixellateFilter *f = [[GPUImagePixellateFilter alloc] init];
+            f.qevName = @"px";
+            f.fractionalWidthOfAPixel = 0.0;
+            [self.crushFilters addObject:f];
+        }
+        
+        {
+            
+            GPUImageiOSBlurFilter *f = [[GPUImageiOSBlurFilter alloc] init];
+            f.qevName = @"blur";
+            f.saturation = 1.0;
+            f.blurRadiusInPixels = 0.0;
+            [self.crushFilters addObject:f];
+        }
     }
     
     if (self.currentRetroFilterIndex >= 0) {
@@ -370,11 +381,11 @@
     if (self.currentRetroFilterIndex >= 0) {
         [self.videoCamera addTarget:self.retroFilters[self.currentRetroFilterIndex]];
         [self.retroFilters[self.currentRetroFilterIndex] addTarget:self.colorFilters.firstObject];
-        self.filterInfoLabel.text = self.retroFilters[self.currentRetroFilterIndex].qevName;
+        self.filterInfoLabel.text = [NSString stringWithFormat:@"<< %@ >>", self.retroFilters[self.currentRetroFilterIndex].qevName];
     }
     else {
         [self.videoCamera addTarget:self.colorFilters.firstObject];
-        self.filterInfoLabel.text = @"No filter";
+        self.filterInfoLabel.text = @"<< No filter >>";
     }
 }
 
@@ -562,7 +573,9 @@
     tv.showsHorizontalScrollIndicator = NO;
     tv.layer.cornerRadius = 8.0;
     tv.editable = NO;
-    tv.text = @"abc\nabc\nabc\nabc\nabc\nabc\nabc\nabc\nabc\nabc\nabc\nabc\nabc\nabc\nabc\nabc\nabc\nabc\nabc\nabc\nabc\nabc\nabc\nabc\nabc\nabc\nabc\nabc\nabc\nabc\nabc\nabc\nabc";
+    tv.text = [NSString stringWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"help" ofType:@"txt"]
+                                        encoding:NSUTF8StringEncoding
+                                           error:NULL];
     tv.alpha = 0.0;
     [self.view addSubview:tv];
     
@@ -672,7 +685,58 @@
 }
 
 - (void)onRecInfoLabelTimer:(id)sender {
-    if (self.recInfoStartTime > 0) {
+    _timerTicks++;
+    
+    if (_currentCrushFilterIndex >= 0 && _activeCrushFilter != nil) {
+        CGFloat vFrom = _crushFilterLowValue;
+        CGFloat vTo = _crushFilterHighValue;
+        if (!_crushFilterRampingUp) {
+            vFrom = _crushFilterHighValue;
+            vTo = _crushFilterLowValue;
+        }
+        
+        CGFloat vCurrent = 0.0;
+        BOOL linearRampUp = _crushFilterTau > 1.0;
+        
+        switch (_currentCrushFilterIndex) {
+            case 0: vCurrent = ((GPUImagePolkaDotFilter *)(self.activeCrushFilter)).fractionalWidthOfAPixel; break;
+            case 1: vCurrent = ((GPUImageBrightnessFilter *)(self.activeCrushFilter)).brightness; break;
+            case 2: vCurrent = ((GPUImagePixellateFilter *)(self.activeCrushFilter)).fractionalWidthOfAPixel; break;
+            case 3: vCurrent = ((GPUImageiOSBlurFilter *)(self.activeCrushFilter)).blurRadiusInPixels; break;
+        }
+        
+        vCurrent -= vFrom;
+        vCurrent /= (vTo - vFrom);
+        if (linearRampUp) {
+            vCurrent += _crushFilterTau * 0.01;
+        }
+        else {
+            vCurrent = _crushFilterTau + (1.0 - _crushFilterTau) * vCurrent;
+        }
+        
+        if (vCurrent > 1.0) vCurrent = 1.0;
+        else if (vCurrent < 0.0) vCurrent = 0.0;
+        
+        BOOL shouldStop = _crushFilterRampingUp == NO && fabs(vCurrent - 1.0) < 0.01;
+        
+        vCurrent *= (vTo - vFrom);
+        vCurrent += vFrom;
+        
+        switch (_currentCrushFilterIndex) {
+            case 0: ((GPUImagePolkaDotFilter *)(self.activeCrushFilter)).fractionalWidthOfAPixel = vCurrent; break;
+            case 1: ((GPUImageBrightnessFilter *)(self.activeCrushFilter)).brightness = vCurrent; break;
+            case 2: ((GPUImagePixellateFilter *)(self.activeCrushFilter)).fractionalWidthOfAPixel = vCurrent; break;
+            case 3: ((GPUImageiOSBlurFilter *)(self.activeCrushFilter)).blurRadiusInPixels = vCurrent; break;
+        }
+        
+        if (shouldStop) {
+            self.currentCrushFilterIndex = -1;
+            self.activeCrushFilter = nil;
+            [self updateAfterCrushFilterIndexChange];
+        }
+    }
+    
+    if ((_timerTicks % 15) == 0 && self.recInfoStartTime > 0) {
         NSUInteger elapsedSeconds = (int)(CACurrentMediaTime() - self.recInfoStartTime);
         NSUInteger h = elapsedSeconds / 3600;
         NSUInteger m = (elapsedSeconds / 60) % 60;
@@ -683,35 +747,103 @@
 }
 
 - (IBAction)onDotsCrushBtnDown:(id)sender {
-    NSLog(@"1");
+    if (self.helpView) {
+        [self hideHelp];
+        return;
+    }
+    
+    if (self.currentCrushFilterIndex >= 0) {
+        self.crushFilterRampingUp = YES;
+        return;
+    }
+    
+    self.currentCrushFilterIndex = 0;
+    self.activeCrushFilter = self.crushFilters[self.currentCrushFilterIndex];
+    self.crushFilterRampingUp = YES;
+    self.crushFilterLowValue = 0.0;
+    self.crushFilterHighValue = 0.05;
+    self.crushFilterTau = 5.0;
+    ((GPUImagePolkaDotFilter *)(self.activeCrushFilter)).fractionalWidthOfAPixel = self.crushFilterLowValue;
+    [self updateAfterCrushFilterIndexChange];
 }
 
 - (IBAction)onDotsCrushBtnUp:(id)sender {
-    NSLog(@"1.1");
+    self.crushFilterRampingUp = NO;
 }
 
 - (IBAction)onFtbCrushBtnDown:(id)sender {
-    NSLog(@"2");
+    if (self.helpView) {
+        [self hideHelp];
+        return;
+    }
+    
+    if (self.currentCrushFilterIndex >= 0) {
+        self.crushFilterRampingUp = YES;
+        return;
+    }
+    
+    self.currentCrushFilterIndex = 1;
+    self.activeCrushFilter = self.crushFilters[self.currentCrushFilterIndex];
+    self.crushFilterRampingUp = YES;
+    self.crushFilterLowValue = 0.0;
+    self.crushFilterHighValue = -1.0;
+    self.crushFilterTau = 12.0;
+    ((GPUImageBrightnessFilter *)(self.activeCrushFilter)).brightness = self.crushFilterLowValue;
+    [self updateAfterCrushFilterIndexChange];
 }
 
 - (IBAction)onFtbCrushBtnUp:(id)sender {
-    NSLog(@"2.2");
+    self.crushFilterRampingUp = NO;
 }
 
 - (IBAction)onPxCrushBtnDown:(id)sender {
-    NSLog(@"3");
+    if (self.helpView) {
+        [self hideHelp];
+        return;
+    }
+    
+    if (self.currentCrushFilterIndex >= 0) {
+        self.crushFilterRampingUp = YES;
+        return;
+    }
+    
+    self.currentCrushFilterIndex = 2;
+    self.activeCrushFilter = self.crushFilters[self.currentCrushFilterIndex];
+    self.crushFilterRampingUp = YES;
+    self.crushFilterLowValue = 0.0;
+    self.crushFilterHighValue = 0.07;
+    self.crushFilterTau = 7.0;
+    ((GPUImagePixellateFilter *)(self.activeCrushFilter)).fractionalWidthOfAPixel = self.crushFilterLowValue;
+    [self updateAfterCrushFilterIndexChange];
 }
 
 - (IBAction)onPxCrushBtnUp:(id)sender {
-    NSLog(@"3.3");
+    self.crushFilterRampingUp = NO;
 }
 
 - (IBAction)onBlurCrushBtnDown:(id)sender {
-    NSLog(@"4");
+    if (self.helpView) {
+        [self hideHelp];
+        return;
+    }
+    
+    if (self.currentCrushFilterIndex >= 0) {
+        self.crushFilterRampingUp = YES;
+        return;
+    }
+    
+    self.currentCrushFilterIndex = 3;
+    self.activeCrushFilter = self.crushFilters[self.currentCrushFilterIndex];
+    self.crushFilterRampingUp = YES;
+    self.crushFilterLowValue = 0.0;
+    self.crushFilterHighValue = 16.0;
+    self.crushFilterTau = 8.0;
+    ((GPUImageiOSBlurFilter *)(self.activeCrushFilter)).blurRadiusInPixels = self.crushFilterLowValue;
+    [self updateAfterCrushFilterIndexChange];
 }
 
 - (IBAction)onBlurCrushBtnUp:(id)sender {
-    NSLog(@"4.4");
+    self.crushFilterRampingUp = NO;
 }
 
 @end

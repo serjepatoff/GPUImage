@@ -33,6 +33,7 @@
 		CE9FBB4424922F97001DB868 /* qevcam1024.png in Resources */ = {isa = PBXBuildFile; fileRef = CE9FBB4324922F97001DB868 /* qevcam1024.png */; };
 		CE9FBB4624924B66001DB868 /* Photos.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CE9FBB4524924B66001DB868 /* Photos.framework */; };
 		CE9FBB4B2492623D001DB868 /* torch_icon_w.png in Resources */ = {isa = PBXBuildFile; fileRef = CE9FBB4A2492623D001DB868 /* torch_icon_w.png */; };
+		CE9FBB532492CC2A001DB868 /* help.txt in Resources */ = {isa = PBXBuildFile; fileRef = CE9FBB522492CC2A001DB868 /* help.txt */; };
 		D30ACF271BAFE43F00E9759C /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D30ACF261BAFE43F00E9759C /* AssetsLibrary.framework */; };
 /* End PBXBuildFile section */
 
@@ -61,11 +62,11 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		BCB5DDCA14E86899000AF3C2 /* SimpleVideoFilter.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SimpleVideoFilter.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		BCB5DDCA14E86899000AF3C2 /* QEV Cam.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "QEV Cam.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		BCB5DDCE14E86899000AF3C2 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		BCB5DDD014E86899000AF3C2 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		BCB5DDD214E86899000AF3C2 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
-		BCB5DDD614E86899000AF3C2 /* SimpleVideoFilter-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "SimpleVideoFilter-Info.plist"; sourceTree = "<group>"; };
+		BCB5DDD614E86899000AF3C2 /* QEVCamInfo.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = QEVCamInfo.plist; sourceTree = "<group>"; };
 		BCB5DDD814E86899000AF3C2 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		BCB5DDDA14E86899000AF3C2 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		BCB5DDDC14E86899000AF3C2 /* SimpleVideoFilter-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "SimpleVideoFilter-Prefix.pch"; sourceTree = "<group>"; };
@@ -92,6 +93,7 @@
 		CE9FBB4324922F97001DB868 /* qevcam1024.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = qevcam1024.png; sourceTree = "<group>"; };
 		CE9FBB4524924B66001DB868 /* Photos.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Photos.framework; path = System/Library/Frameworks/Photos.framework; sourceTree = SDKROOT; };
 		CE9FBB4A2492623D001DB868 /* torch_icon_w.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = torch_icon_w.png; sourceTree = "<group>"; };
+		CE9FBB522492CC2A001DB868 /* help.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = help.txt; sourceTree = "<group>"; };
 		D30ACF261BAFE43F00E9759C /* AssetsLibrary.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AssetsLibrary.framework; path = System/Library/Frameworks/AssetsLibrary.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
@@ -129,7 +131,7 @@
 		BCB5DDCB14E86899000AF3C2 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				BCB5DDCA14E86899000AF3C2 /* SimpleVideoFilter.app */,
+				BCB5DDCA14E86899000AF3C2 /* QEV Cam.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -171,6 +173,7 @@
 				BCB5DDE714E868C0000AF3C2 /* SimpleVideoFilterViewController.xib */,
 				CE9FBB3F249216FD001DB868 /* Images.xcassets */,
 				BCB5DDD514E86899000AF3C2 /* Supporting Files */,
+				CE9FBB522492CC2A001DB868 /* help.txt */,
 			);
 			path = SimpleVideoFilter;
 			sourceTree = "<group>";
@@ -178,7 +181,7 @@
 		BCB5DDD514E86899000AF3C2 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				BCB5DDD614E86899000AF3C2 /* SimpleVideoFilter-Info.plist */,
+				BCB5DDD614E86899000AF3C2 /* QEVCamInfo.plist */,
 				BCB5DDD714E86899000AF3C2 /* InfoPlist.strings */,
 				BCB5DDDA14E86899000AF3C2 /* main.m */,
 				BCB5DDDC14E86899000AF3C2 /* SimpleVideoFilter-Prefix.pch */,
@@ -214,7 +217,7 @@
 			);
 			name = SimpleVideoFilter;
 			productName = SimpleVideoFilter;
-			productReference = BCB5DDCA14E86899000AF3C2 /* SimpleVideoFilter.app */;
+			productReference = BCB5DDCA14E86899000AF3C2 /* QEV Cam.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -279,6 +282,7 @@
 			files = (
 				BCB5DDD914E86899000AF3C2 /* InfoPlist.strings in Resources */,
 				CE9FBB4B2492623D001DB868 /* torch_icon_w.png in Resources */,
+				CE9FBB532492CC2A001DB868 /* help.txt in Resources */,
 				CE9FBB3E2492125F001DB868 /* torch_icon.png in Resources */,
 				BCB5DDE914E868C0000AF3C2 /* SimpleVideoFilterViewController.xib in Resources */,
 				CE9FBB2724917A6C001DB868 /* lookup_soft_elegance_2.png in Resources */,
@@ -403,12 +407,15 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = F866RBRTQQ;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "SimpleVideoFilter/SimpleVideoFilter-Prefix.pch";
-				INFOPLIST_FILE = "SimpleVideoFilter/SimpleVideoFilter-Info.plist";
+				INFOPLIST_FILE = SimpleVideoFilter/QEVCAmInfo.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.apptopia.QEVCam;
+				PRODUCT_NAME = "QEV Cam";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -418,12 +425,15 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = F866RBRTQQ;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "SimpleVideoFilter/SimpleVideoFilter-Prefix.pch";
-				INFOPLIST_FILE = "SimpleVideoFilter/SimpleVideoFilter-Info.plist";
+				INFOPLIST_FILE = SimpleVideoFilter/QEVCAmInfo.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.apptopia.QEVCam;
+				PRODUCT_NAME = "QEV Cam";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;

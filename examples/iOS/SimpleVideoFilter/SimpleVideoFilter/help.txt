@@ -1,0 +1,30 @@
+**** QEV Cam 1.0 ****
+
+QEV Cam is quick and easy video camcorder app.
+
+Its main benefits are:
+
+1. Quick opening. Don’t lose a moment anymore.
+2. All controls are on the main OSD. Shoot footages instantly.
+3. Filters can be switched on the fly while recording is in progress.
+4. Very low system requirements. Works on a broad range of devices from iPhone 5 to 11 Pro Max.
+5. Besides video filters it has jingle buttons (on the left side) to delimit cutscenes in a single video.
+
+Quick help:
+
+- Swipe left/right on the main screen to switch video filters.
+
+Right buttons are main controls:
+
+- Flash button: turns the flashlight on/off
+- Rec button: turns the recording on/off.
+- Help button: shows this help.
+
+Left Buttons are jingle controls:
+
+- FTB: fade to black jingle button.
+- Blur: blur/unblur.
+- PX: pixelize/unpixelize.
+- Dots: pixelize/unpixelize with rounded pixels.
+
+Touch anywhere to close this help.
