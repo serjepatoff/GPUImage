@@ -26,6 +26,14 @@
 	<string>1.0</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>NSCameraUsageDescription</key>
+	<string>camU</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>micU</string>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>phLibAddU</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>phLibU</string>
 	<key>UIFileSharingEnabled</key>
 	<true/>
 	<key>UIPrerenderedIcon</key>
@@ -36,8 +44,6 @@
 	</array>
 	<key>UISupportedInterfaceOrientations</key>
 	<array>
-		<string>UIInterfaceOrientationPortrait</string>
-		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
 	<key>UISupportedInterfaceOrientations~ipad</key>
