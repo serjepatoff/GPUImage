@@ -58,6 +58,8 @@ void setColorConversion709( GLfloat conversionMatrix[9] );
  */
 @property (readwrite) int32_t frameRate;
 
+@property (readonly, assign) BOOL hasFlash;
+
 /// Easy way to tell which cameras are present on device
 @property (readonly, getter = isFrontFacingCameraPresent) BOOL frontFacingCameraPresent;
 @property (readonly, getter = isBackFacingCameraPresent) BOOL backFacingCameraPresent;

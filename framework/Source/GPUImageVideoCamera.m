@@ -117,6 +117,8 @@ void setColorConversion709( GLfloat conversionMatrix[9] )
 	{
 		[_captureSession addInput:videoInput];
 	}
+    
+    _hasFlash = _inputCamera.hasFlash;
 	
 	// Add the video frame output	
 	videoOutput = [[AVCaptureVideoDataOutput alloc] init];

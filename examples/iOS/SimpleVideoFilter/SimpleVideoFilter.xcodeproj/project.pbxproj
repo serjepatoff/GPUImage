@@ -7,11 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		BCB3C44716BCA8C4003D26B0 /* Icon-72.png in Resources */ = {isa = PBXBuildFile; fileRef = BCB3C44216BCA8C4003D26B0 /* Icon-72.png */; };
-		BCB3C44816BCA8C4003D26B0 /* Icon-72@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BCB3C44316BCA8C4003D26B0 /* Icon-72@2x.png */; };
-		BCB3C44916BCA8C4003D26B0 /* Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = BCB3C44416BCA8C4003D26B0 /* Icon.png */; };
-		BCB3C44A16BCA8C4003D26B0 /* Icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BCB3C44516BCA8C4003D26B0 /* Icon@2x.png */; };
-		BCB3C44B16BCA8C4003D26B0 /* iTunesArtwork.png in Resources */ = {isa = PBXBuildFile; fileRef = BCB3C44616BCA8C4003D26B0 /* iTunesArtwork.png */; };
 		BCB5DDCF14E86899000AF3C2 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BCB5DDCE14E86899000AF3C2 /* UIKit.framework */; };
 		BCB5DDD114E86899000AF3C2 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BCB5DDD014E86899000AF3C2 /* Foundation.framework */; };
 		BCB5DDD314E86899000AF3C2 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BCB5DDD214E86899000AF3C2 /* CoreGraphics.framework */; };
@@ -32,8 +27,11 @@
 		CE9FBB3A2491F4FA001DB868 /* lookup_bird.jpg in Resources */ = {isa = PBXBuildFile; fileRef = CE9FBB352491F4FA001DB868 /* lookup_bird.jpg */; };
 		CE9FBB3B2491F4FA001DB868 /* lookup_brick.jpg in Resources */ = {isa = PBXBuildFile; fileRef = CE9FBB362491F4FA001DB868 /* lookup_brick.jpg */; };
 		CE9FBB3C2491F4FA001DB868 /* lookup_miss_etikate.jpg in Resources */ = {isa = PBXBuildFile; fileRef = CE9FBB372491F4FA001DB868 /* lookup_miss_etikate.jpg */; };
+		CE9FBB3E2492125F001DB868 /* torch_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = CE9FBB3D2492125F001DB868 /* torch_icon.png */; };
+		CE9FBB40249216FD001DB868 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CE9FBB3F249216FD001DB868 /* Images.xcassets */; };
+		CE9FBB4224922E93001DB868 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CE9FBB4124922E93001DB868 /* LaunchScreen.storyboard */; };
+		CE9FBB4424922F97001DB868 /* qevcam1024.png in Resources */ = {isa = PBXBuildFile; fileRef = CE9FBB4324922F97001DB868 /* qevcam1024.png */; };
 		D30ACF271BAFE43F00E9759C /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D30ACF261BAFE43F00E9759C /* AssetsLibrary.framework */; };
-		E5066F611855AC78008C7682 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E5066F601855AC78008C7682 /* Default-568h@2x.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -61,11 +59,6 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		BCB3C44216BCA8C4003D26B0 /* Icon-72.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Icon-72.png"; path = "../../SharedIcons/Icon-72.png"; sourceTree = "<group>"; };
-		BCB3C44316BCA8C4003D26B0 /* Icon-72@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Icon-72@2x.png"; path = "../../SharedIcons/Icon-72@2x.png"; sourceTree = "<group>"; };
-		BCB3C44416BCA8C4003D26B0 /* Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Icon.png; path = ../../SharedIcons/Icon.png; sourceTree = "<group>"; };
-		BCB3C44516BCA8C4003D26B0 /* Icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Icon@2x.png"; path = "../../SharedIcons/Icon@2x.png"; sourceTree = "<group>"; };
-		BCB3C44616BCA8C4003D26B0 /* iTunesArtwork.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = iTunesArtwork.png; path = ../../SharedIcons/iTunesArtwork.png; sourceTree = "<group>"; };
 		BCB5DDCA14E86899000AF3C2 /* SimpleVideoFilter.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SimpleVideoFilter.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BCB5DDCE14E86899000AF3C2 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		BCB5DDD014E86899000AF3C2 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -91,8 +84,11 @@
 		CE9FBB352491F4FA001DB868 /* lookup_bird.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = lookup_bird.jpg; sourceTree = "<group>"; };
 		CE9FBB362491F4FA001DB868 /* lookup_brick.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = lookup_brick.jpg; sourceTree = "<group>"; };
 		CE9FBB372491F4FA001DB868 /* lookup_miss_etikate.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = lookup_miss_etikate.jpg; sourceTree = "<group>"; };
+		CE9FBB3D2492125F001DB868 /* torch_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = torch_icon.png; sourceTree = "<group>"; };
+		CE9FBB3F249216FD001DB868 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		CE9FBB4124922E93001DB868 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
+		CE9FBB4324922F97001DB868 /* qevcam1024.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = qevcam1024.png; sourceTree = "<group>"; };
 		D30ACF261BAFE43F00E9759C /* AssetsLibrary.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AssetsLibrary.framework; path = System/Library/Frameworks/AssetsLibrary.framework; sourceTree = SDKROOT; };
-		E5066F601855AC78008C7682 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -119,7 +115,6 @@
 		BCB5DDBF14E86899000AF3C2 = {
 			isa = PBXGroup;
 			children = (
-				E5066F601855AC78008C7682 /* Default-568h@2x.png */,
 				BCB5DDD414E86899000AF3C2 /* SimpleVideoFilter */,
 				BCB5DDCD14E86899000AF3C2 /* Frameworks */,
 				BCB5DDCB14E86899000AF3C2 /* Products */,
@@ -154,6 +149,8 @@
 		BCB5DDD414E86899000AF3C2 /* SimpleVideoFilter */ = {
 			isa = PBXGroup;
 			children = (
+				CE9FBB4324922F97001DB868 /* qevcam1024.png */,
+				CE9FBB3D2492125F001DB868 /* torch_icon.png */,
 				CE9FBB352491F4FA001DB868 /* lookup_bird.jpg */,
 				CE9FBB362491F4FA001DB868 /* lookup_brick.jpg */,
 				CE9FBB372491F4FA001DB868 /* lookup_miss_etikate.jpg */,
@@ -165,6 +162,7 @@
 				BCB5DDE514E868C0000AF3C2 /* SimpleVideoFilterViewController.h */,
 				BCB5DDE614E868C0000AF3C2 /* SimpleVideoFilterViewController.m */,
 				BCB5DDE714E868C0000AF3C2 /* SimpleVideoFilterViewController.xib */,
+				CE9FBB3F249216FD001DB868 /* Images.xcassets */,
 				BCB5DDD514E86899000AF3C2 /* Supporting Files */,
 			);
 			path = SimpleVideoFilter;
@@ -173,15 +171,11 @@
 		BCB5DDD514E86899000AF3C2 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				BCB3C44216BCA8C4003D26B0 /* Icon-72.png */,
-				BCB3C44316BCA8C4003D26B0 /* Icon-72@2x.png */,
-				BCB3C44416BCA8C4003D26B0 /* Icon.png */,
-				BCB3C44516BCA8C4003D26B0 /* Icon@2x.png */,
-				BCB3C44616BCA8C4003D26B0 /* iTunesArtwork.png */,
 				BCB5DDD614E86899000AF3C2 /* SimpleVideoFilter-Info.plist */,
 				BCB5DDD714E86899000AF3C2 /* InfoPlist.strings */,
 				BCB5DDDA14E86899000AF3C2 /* main.m */,
 				BCB5DDDC14E86899000AF3C2 /* SimpleVideoFilter-Prefix.pch */,
+				CE9FBB4124922E93001DB868 /* LaunchScreen.storyboard */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -277,18 +271,16 @@
 			buildActionMask = 2147483647;
 			files = (
 				BCB5DDD914E86899000AF3C2 /* InfoPlist.strings in Resources */,
+				CE9FBB3E2492125F001DB868 /* torch_icon.png in Resources */,
 				BCB5DDE914E868C0000AF3C2 /* SimpleVideoFilterViewController.xib in Resources */,
-				BCB3C44716BCA8C4003D26B0 /* Icon-72.png in Resources */,
 				CE9FBB2724917A6C001DB868 /* lookup_soft_elegance_2.png in Resources */,
 				CE9FBB392491F4FA001DB868 /* lookup_puyo.jpg in Resources */,
-				BCB3C44816BCA8C4003D26B0 /* Icon-72@2x.png in Resources */,
-				BCB3C44916BCA8C4003D26B0 /* Icon.png in Resources */,
-				E5066F611855AC78008C7682 /* Default-568h@2x.png in Resources */,
+				CE9FBB4424922F97001DB868 /* qevcam1024.png in Resources */,
+				CE9FBB40249216FD001DB868 /* Images.xcassets in Resources */,
 				CE9FBB3B2491F4FA001DB868 /* lookup_brick.jpg in Resources */,
 				CE9FBB3A2491F4FA001DB868 /* lookup_bird.jpg in Resources */,
 				CE9FBB382491F4FA001DB868 /* lookup_soft_elegance_1.jpg in Resources */,
-				BCB3C44A16BCA8C4003D26B0 /* Icon@2x.png in Resources */,
-				BCB3C44B16BCA8C4003D26B0 /* iTunesArtwork.png in Resources */,
+				CE9FBB4224922E93001DB868 /* LaunchScreen.storyboard in Resources */,
 				CE9FBB3C2491F4FA001DB868 /* lookup_miss_etikate.jpg in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -332,6 +324,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_EMPTY_BODY = YES;
@@ -357,12 +350,9 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = "../../../framework/**";
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				ONLY_ACTIVE_ARCH = YES;
-				OTHER_LDFLAGS = (
-					"-ObjC",
-					"-fobjc-arc",
-				);
+				OTHER_LDFLAGS = "-ObjC";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -372,6 +362,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_EMPTY_BODY = YES;
@@ -390,12 +381,9 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = "../../../framework/**";
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
-				OTHER_LDFLAGS = (
-					"-ObjC",
-					"-fobjc-arc",
-				);
+				OTHER_LDFLAGS = "-ObjC";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
@@ -405,12 +393,13 @@
 		BCB5DDE314E86899000AF3C2 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				DEVELOPMENT_TEAM = F866RBRTQQ;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "SimpleVideoFilter/SimpleVideoFilter-Prefix.pch";
 				INFOPLIST_FILE = "SimpleVideoFilter/SimpleVideoFilter-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
@@ -419,12 +408,13 @@
 		BCB5DDE414E86899000AF3C2 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				DEVELOPMENT_TEAM = F866RBRTQQ;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "SimpleVideoFilter/SimpleVideoFilter-Prefix.pch";
 				INFOPLIST_FILE = "SimpleVideoFilter/SimpleVideoFilter-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};

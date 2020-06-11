@@ -5,17 +5,15 @@
 
 @synthesize window = _window;
 
-- (void)dealloc
-{
-    [_window release];
-    [super dealloc];
+- (void)dealloc {
+    self.window = nil;
 }
 
-- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
-{
-    self.window = [[[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]] autorelease];
+- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+    CGRect bounds = [[UIScreen mainScreen] bounds];
+    self.window = [[UIWindow alloc] initWithFrame:bounds];
     // Override point for customization after application launch.
-    self.window.backgroundColor = [UIColor whiteColor];
+    self.window.backgroundColor = [UIColor redColor];
     
     rootViewController = [[SimpleVideoFilterViewController alloc] initWithNibName:@"SimpleVideoFilterViewController" bundle:nil];
     rootViewController.view.frame = [[UIScreen mainScreen] bounds];
